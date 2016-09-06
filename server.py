@@ -37,11 +37,22 @@ def authorize_user():
 
 def user_info_by_id(user_id):
     """Uses GR's user.show to get user info, including location, by id"""
+
     url = "https://www.goodreads.com/user/show/%s.xml" %(user_id)
 
     results = requests.get(url, data={"key": CONSUMER_KEY, "id": user_id})
 
     return results.text
+
+def shelves_by_user(user_id):
+    """Uses GR's shelves.list to get user's shelves'"""
+
+    url = "https://www.goodreads.com/shelf/list.xml"
+
+    shelves = requests.get(url, data={"key": CONSUMER_KEY, "user_id": user_id, "page": "1-N"})
+
+    return shelves.text
+
 
 
 
