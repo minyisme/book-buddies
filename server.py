@@ -43,6 +43,15 @@ def user_info_by_id(user_id):
 
     return results.text
 
+# def compare_books():
+#     user_id = 33552770
+#     """Compare books between you and another user by their user id.
+#     Currently: not working b/c of oauth issue."""
+#     url = "https://www.goodreads.com/user/compare/%s.xml" %(user_id)
+
+#     results = requests.get(url, data={"key": CONSUMER_KEY, "id": user_id})
+
+#     return results.text
 
 
 
