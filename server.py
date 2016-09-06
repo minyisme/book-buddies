@@ -5,6 +5,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db
 import os
 from rauth.service import OAuth1Service, OAuth1Session
+import urllib2
+import requests
 
 CONSUMER_KEY = os.environ['GOODREADS_KEY']
 CONSUMER_SECRET = os.environ['GOODREADS_SECRET']
@@ -32,6 +34,14 @@ def authorize_user():
         # and proceed to manually authorize the consumer
         accepted = raw_input('Have you authorized me? (y/n) ')
     print accepted
+
+def user_info_by_id(user_id):
+    """Uses GR's user.show to get user info, including location, by id"""
+    url = "https://www.goodreads.com/user/show/%s.xml" %(user_id)
+
+    results = requests.get(url, data={"key": CONSUMER_KEY, "id": user_id})
+
+    return results.text
 
 
 
