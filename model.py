@@ -22,6 +22,7 @@ class User(db.Model):
             self.location, self.account_link)
 
 
+# users can view and join bookclubs to be a part of
 class Bookclub(db.Model):
     """A book buddies bookclub user can join, has shelves of its own"""
 
@@ -41,11 +42,13 @@ class Bookclub(db.Model):
         return ("<Bookclub_id=%s title=%s>" % (self.bookclub_id, self.title))
 
 
+# a connection between user and bookclub constitutes membership
 class Membership(db.Model):
     """A user's membership in a bookclub, an association table"""
 
     __tablename__ = "memberships"
 
+    membership_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     bookclub_id = db.Column(db.Integer, db.ForeignKey('bookclubs.bookclub_id'), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
 
@@ -56,6 +59,7 @@ class Membership(db.Model):
     bookclub = db.relationship("Bookclub", backref=db.backref("memberships"))
 
 
+# a shelf is a category of books within a bookclub that indicate its users tastes
 class Shelf(db.Model):
     """A shelf within a bookclub"""
 
@@ -71,12 +75,13 @@ class Shelf(db.Model):
 
 
     def __repr__(self):
-    """Provide helpful representation when printed."""
+        """Provide helpful representation when printed."""
 
-    return ("<Shelf_id=%s bookclub_id=%s category=%s>" % (self.shelf_id,
-        self.bookclub_id, self.category))
+        return ("<Shelf_id=%s bookclub_id=%s category=%s>" % (self.shelf_id,
+            self.bookclub_id, self.category))
 
 
+# a book is a novel that is of interest to the users and placed on a shelf
 class Book(db.Model):
     """A book within a shelf, a book that is part of a bookclub's shelf"""
 
@@ -87,16 +92,18 @@ class Book(db.Model):
 
 
     def __repr__(self):
-    """Provide helpful representation when printed."""
+        """Provide helpful representation when printed."""
 
-    return ("<Book_id=%s book_link=%s>" % (self.book_id, self.book_link))
+        return ("<Book_id=%s book_link=%s>" % (self.book_id, self.book_link))
 
 
+# a book and shelf have a connection of belonging there based on taste
 class Belonging(db.Model):
     """An association table between a book and a shelf"""
 
     __tablename__ = "belongings"
 
+    belonging_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey('books.book_id'), nullable=True)
     shelf_id = db.Column(db.Integer, db.ForeignKey('shelves.shelf_id'), nullable=True)
 
@@ -115,7 +122,8 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
     # add if statements here
-    db.create_all()
+    db.create_all() # FIX ME: sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) FATAL:  database "goodreadsdb" does not exist
+    # note for diana: db won't create \l shows it does not exist
 
 if __name__ == "__main__":
 
