@@ -122,8 +122,7 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
     # add if statements here
-    db.create_all() # FIX ME: sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) FATAL:  database "goodreadsdb" does not exist
-    # note for diana: db won't create \l shows it does not exist
+    db.create_all()
 
 if __name__ == "__main__":
 
